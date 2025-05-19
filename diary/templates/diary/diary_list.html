@@ -19,8 +19,8 @@
                                 <p class="card-text"><small class="text-muted">Автор: {{ diary.user }}</small></p>
 
                                 {% if user == diary.user %}
-                                    <a href="#" class="btn btn-primary btn-sm">Редактировать</a>
-                                    <a href="#" class="btn btn-info btn-sm">Подробнее</a>
+                                    <a href="{% url 'diary:diary_update' diary.pk %}" class="btn btn-primary btn-sm">Редактировать</a>
+                                    <a href="{% url 'diary:diary_detail' diary.pk %}" class="btn btn-info btn-sm">Подробнее</a>
                                     <a href="#" class="btn btn-danger btn-sm">Удалить</a>
                                 {% endif %}
                             </div>
