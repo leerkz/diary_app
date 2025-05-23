@@ -1,0 +1,73 @@
+{% extends 'diary/base.html' %}
+
+{% block title %}Удаление заметки{% endblock %}
+
+{% block content %}
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+    .card-header {
+        background: linear-gradient(90deg, #d4c2f0, #f3d1f4);
+        color: #3b3355;
+        font-family: 'Playfair Display', serif;
+    }
+
+    .card-body {
+        font-family: 'Inter', sans-serif;
+        color: #5a5470;
+    }
+
+    .btn-soft-pink {
+        background-color: #e38cb7;
+        color: white;
+        border-radius: 30px;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .btn-soft-pink:hover {
+        background-color: #d678a4;
+        transform: scale(1.02);
+    }
+
+    .btn-outline-secondary {
+        border-color: #c4b6dd;
+        color: #7a728c;
+        border-radius: 30px;
+        transition: all 0.3s ease;
+    }
+
+    .btn-outline-secondary:hover {
+        background-color: #f1ebfb;
+        color: #5a5470;
+    }
+</style>
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-8">
+            <div class="card shadow-lg border-0 rounded-4" style="background-color: #f9f7fc;">
+                <div class="card-header rounded-top-4 text-center py-3">
+                    <h4 class="mb-0">Подтверждение удаления</h4>
+                </div>
+                <div class="card-body p-4">
+                    <p class="text-center fs-5 mb-4">
+                        Вы действительно хотите удалить заметку <strong>«{{ object.title }}»</strong>?
+                    </p>
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="d-flex justify-content-center gap-3">
+                            <button type="submit" class="btn btn-soft-pink px-4">
+                                <i class="bi bi-trash"></i> Удалить
+                            </button>
+                            <a href="{% url 'diary:diary_list' %}" class="btn btn-outline-secondary px-4">
+                                Отмена
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
