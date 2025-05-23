@@ -1,0 +1,64 @@
+{% extends 'diary/base.html' %}
+
+{% block title %}Поиск записей{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+
+            <!-- Поисковая форма -->
+            <div class="card shadow-lg border-0 rounded-4 mb-5" style="background: #f9f7fc;">
+                <div class="card-header rounded-top-4" style="background: linear-gradient(90deg, #d4c2f0, #f3d1f4); color: #3b3355; font-family: 'Playfair Display', serif;">
+                    <h4 class="text-center mb-0">Поиск записей</h4>
+                </div>
+                <div class="card-body p-4" style="color: #5a5470; font-family: 'Inter', sans-serif;">
+                    <form method="get" class="row g-3">
+                        {% csrf_token %}
+                        <div class="col-12">
+                            {{ form.as_p|safe }}
+                        </div>
+                        <div class="col-12 text-end">
+                            <button type="submit" class="btn" style="background-color: #a285d6; color: white; border-radius: 30px; padding: 0.5rem 1.75rem;">
+                                Искать
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Результаты поиска -->
+            {% if object_list %}
+                <div class="card shadow-lg border-0 rounded-4" style="background: #f9f7fc;">
+                    <div class="card-header rounded-top-4" style="background: linear-gradient(90deg, #a185d6, #c4b6dd); color: #3b3355; font-family: 'Playfair Display', serif;">
+                        <h4 class="text-center mb-0">Результаты поиска</h4>
+                    </div>
+                    <div class="card-body p-4" style="color: #5a5470; font-family: 'Inter', sans-serif;">
+                        {% for record in object_list %}
+                            <div class="mb-4 pb-3 border-bottom" style="border-color: #d6ccec;">
+                                <h5 class="fw-semibold">{{ record.title }}</h5>
+                                <p class="text-muted">{{ record.content|truncatewords:30 }}</p>
+                                <a href="{% url 'diary:diary_detail' record.pk %}" class="btn btn-outline-primary btn-sm" style="border-color: #a285d6; color: #6b5ec8;">
+                                    Читать полностью
+                                </a>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% elif form.errors %}
+                <div class="alert alert-danger mt-4" style="font-family: 'Inter', sans-serif;">
+                    <strong>Ошибка:</strong> {{ form.errors }}
+                </div>
+            {% else %}
+                <div class="alert alert-info mt-4 text-center" style="font-family: 'Inter', sans-serif; color: #7a728c;">
+                    Ничего не найдено. Попробуйте изменить запрос.
+                </div>
+            {% endif %}
+
+        </div>
+    </div>
+</div>
+
+<!-- Подключение шрифтов -->
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+{% endblock %}

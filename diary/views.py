@@ -1,9 +1,12 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Q
 from django.shortcuts import render
+from django.template.defaultfilters import title
 from django.urls import reverse_lazy
+from django.views import View
 from django.views.generic import TemplateView, ListView, CreateView, UpdateView, DetailView, DeleteView
 
-from diary.form import DiaryEntryForm
+from diary.form import DiaryEntryForm, DiaryEntrySearchForm
 from diary.models import DiaryEntry
 
 
@@ -65,3 +68,18 @@ class DiaryEntryDeleteView(LoginRequiredMixin, DeleteView):
     def test_func(self):
         obj = self.get_object()
         return obj.user == self.request.user
+
+
+class DiaryEntrySearchView(View):
+    form_class = DiaryEntrySearchForm
+    template_name = 'diary/search_form.html'
+
+    def get(self, request, *args, **kwargs):
+        form = self.form_class(request.GET or None)
+        diaries = []
+
+        if request.GET and form.is_valid():
+            query = form.cleaned_data['query']
+            diaries = DiaryEntry.objects.filter(Q(title__icontains=query) | Q(content__icontains=query), user=request.user)
+
+        return render(request, self.template_name, {'form': form, 'object_list': diaries})
