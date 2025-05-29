@@ -1,0 +1,28 @@
+<header class="mb-5" style="background: #f9f7fc; box-shadow: 0 4px 12px rgba(98, 88, 131, 0.1); border-bottom: 1px solid #d6ccec;">
+    <div class="container py-3 d-flex flex-column flex-md-row align-items-center justify-content-between">
+        <h5 class="mb-2 mb-md-0 fw-bold" style="color: #6b5ec8; font-family: 'Playfair Display', serif; font-size: 1.3rem;">
+            Мысли в 3 часа ночи
+        </h5>
+        {% if user.is_authenticated %}
+            <p class="mb-0" style="color: #7a728c; font-family: 'Inter', sans-serif; font-weight: 500;">
+                Привет, {{ user.username }}!
+            </p>
+        {% else %}
+            <p class="mb-0" style="color: #7a728c; font-family: 'Inter', sans-serif; font-weight: 500;">
+                Добро пожаловать, гость
+            </p>
+        {% endif %}
+    </div>
+
+    <div class="container text-center py-5">
+        <h1 class="display-4 fw-semibold" style="font-family: 'Playfair Display', serif; color: #4b3b66; letter-spacing: 0.05em;">
+            Мысли в 3 часа ночи
+        </h1>
+        <p class="lead" style="color: #7a728c; font-family: 'Inter', sans-serif; font-weight: 400; max-width: 600px; margin: 0 auto;">
+            Приложение, где ты можешь записывать свои мысли, эмоции и важные моменты жизни.
+        </p>
+    </div>
+</header>
+
+<!-- Подключение шрифтов (если еще не подключены в base.html) -->
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;500&display=swap" rel="stylesheet">

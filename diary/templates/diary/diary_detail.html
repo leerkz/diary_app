@@ -1,0 +1,104 @@
+{% extends 'diary/base.html' %}
+
+{% block title %}Заметка | {{ object.title }}{% endblock %}
+
+{% block content %}
+<!-- Подключение шрифтов -->
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+    .card {
+        background-color: #f9f7fc;
+        border: none;
+        border-radius: 1.5rem;
+        box-shadow: 0 8px 20px rgba(98, 88, 131, 0.15);
+        font-family: 'Inter', sans-serif;
+        color: #5a5470;
+    }
+
+    .card-header {
+        background: linear-gradient(90deg, #d4c2f0, #f3d1f4);
+        color: #3b3355;
+        font-family: 'Playfair Display', serif;
+        border-top-left-radius: 1.5rem;
+        border-top-right-radius: 1.5rem;
+        padding: 1.25rem 1.5rem;
+        text-align: center;
+    }
+
+    table th {
+        color: #7a728c;
+        font-weight: 600;
+        width: 30%;
+        text-align: right;
+        vertical-align: middle;
+        padding-right: 1.5rem;
+    }
+
+    table td {
+        color: #5a5470;
+        font-weight: 400;
+        vertical-align: middle;
+    }
+
+    .btn-outline-primary {
+        color: #7a728c;
+        border-color: #c4b6dd;
+        border-radius: 30px;
+        font-weight: 500;
+        padding: 0.5rem 2rem;
+        transition: all 0.3s ease;
+        font-family: 'Inter', sans-serif;
+    }
+
+    .btn-outline-primary:hover {
+        background-color: #e9e4f8;
+        border-color: #b39ddb;
+        color: #5a5470;
+    }
+
+    .text-center {
+        margin-top: 2rem;
+    }
+</style>
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
+            <div class="card shadow-lg rounded-4">
+                <div class="card-header">
+                    <h2 class="mb-0">Информация о заметке</h2>
+                </div>
+                <div class="card-body p-4">
+                    <table class="table table-borderless">
+                        <tbody>
+                            <tr>
+                                <th scope="row">Название:</th>
+                                <td>{{ object.title }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Описание:</th>
+                                <td>{{ object.content|linebreaksbr }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Пользователь:</th>
+                                <td>{{ object.user }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Дата создания:</th>
+                                <td>{{ object.created_at|date:"d.m.Y H:i" }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="text-center">
+                        <a href="{% url 'diary:diary_list' %}" class="btn btn-outline-primary">
+                            ← Назад к списку
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

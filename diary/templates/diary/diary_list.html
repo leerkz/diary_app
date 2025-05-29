@@ -1,0 +1,171 @@
+{% extends 'diary/base.html' %}
+
+{% block content %}
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+    h2 {
+        font-family: 'Playfair Display', serif;
+        color: #4b3b66;
+    }
+
+    .card {
+        background-color: #f9f7fc;
+        border: none;
+        border-radius: 1.5rem;
+        box-shadow: 0 6px 18px rgba(98, 88, 131, 0.1);
+        font-family: 'Inter', sans-serif;
+        color: #5a5470;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 28px rgba(98, 88, 131, 0.2);
+    }
+
+    .card-header {
+        background-color: #e9e4f8;
+        border-bottom: none;
+        border-top-left-radius: 1.5rem;
+        border-top-right-radius: 1.5rem;
+        color: #7a728c;
+        font-size: 0.85rem;
+        font-weight: 500;
+    }
+
+    .card-title {
+        font-family: 'Playfair Display', serif;
+        color: #4b3b66;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+
+    .card-text {
+        color: #7a728c;
+        flex-grow: 1;
+        font-size: 0.95rem;
+        line-height: 1.4;
+    }
+
+    small.text-secondary {
+        color: #9a91b9 !important;
+        font-style: italic;
+    }
+
+    .btn-outline-primary,
+    .btn-outline-warning,
+    .btn-outline-danger {
+        border-radius: 30px;
+        padding: 0.3rem 1rem;
+        font-size: 0.85rem;
+        font-weight: 500;
+        font-family: 'Inter', sans-serif;
+        transition: all 0.3s ease;
+    }
+    .btn-outline-primary {
+        border-color: #b9a8f3;
+        color: #6b5ec8;
+    }
+    .btn-outline-primary:hover {
+        background-color: #c7bcf6;
+        color: #4b3b66;
+        border-color: #9b87e2;
+    }
+    .btn-outline-warning {
+        border-color: #f1c0e8;
+        color: #b763a9;
+    }
+    .btn-outline-warning:hover {
+        background-color: #f8d4f0;
+        color: #7a5280;
+        border-color: #d7a1cc;
+    }
+    .btn-outline-danger {
+        border-color: #e8a0bc;
+        color: #a94d70;
+    }
+    .btn-outline-danger:hover {
+        background-color: #f2c1d1;
+        color: #7a3a53;
+        border-color: #d87a93;
+    }
+
+    .alert-warning {
+        background-color: #f7f3fb;
+        border-color: #d6ccec;
+        color: #6b5ec8;
+        font-family: 'Inter', sans-serif;
+        font-weight: 500;
+        border-radius: 1rem;
+        padding: 1.5rem 2rem;
+        margin-top: 2rem;
+    }
+
+    .text-center.py-5 h1,
+    .text-center.py-5 p {
+        font-family: 'Playfair Display', serif;
+        color: #4b3b66;
+    }
+
+    .btn-primary.btn-lg {
+        background: linear-gradient(90deg, #bca0e8, #d9b6f0);
+        border: none;
+        border-radius: 30px;
+        color: #3b3355;
+        font-family: 'Playfair Display', serif;
+        font-weight: 600;
+        padding: 0.75rem 2.5rem;
+        transition: background 0.3s ease;
+    }
+    .btn-primary.btn-lg:hover {
+        background: linear-gradient(90deg, #d0b9f5, #f0d8ff);
+        color: #2e254d;
+    }
+</style>
+
+<div class="container py-5">
+    {% if user.is_authenticated %}
+        <h2 class="text-center mb-5">Мои записи в дневнике</h2>
+
+        {% if object_list %}
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                {% for diary in object_list %}
+                    <div class="col">
+                        <div class="card h-100 shadow-sm rounded-4">
+                            <div class="card-header">
+                                <small>{{ diary.created_at|date:"d.m.Y H:i" }}</small>
+                            </div>
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title">{{ diary.title }}</h5>
+                                <p class="card-text">{{ diary.content|truncatewords_html:30 }}</p>
+                                <p class="mt-auto mb-2">
+                                    <small class="text-secondary">Автор: {{ diary.user }}</small>
+                                </p>
+
+                                {% if user == diary.user %}
+                                    <div class="d-flex justify-content-between">
+                                        <a href="{% url 'diary:diary_detail' diary.pk %}" class="btn btn-outline-primary btn-sm">Подробнее</a>
+                                        <a href="{% url 'diary:diary_update' diary.pk %}" class="btn btn-outline-warning btn-sm">Редактировать</a>
+                                        <a href="{% url 'diary:diary_delete' diary.pk %}" class="btn btn-outline-danger btn-sm">Удалить</a>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="alert alert-warning text-center" role="alert">
+                У вас пока нет ни одной записи. Создайте первую!
+            </div>
+        {% endif %}
+
+    {% else %}
+        <div class="text-center py-5">
+            <h1 class="display-5 fw-bold">Добро пожаловать!</h1>
+            <p class="lead mb-4">Чтобы просматривать и вести заметки, войдите в свой аккаунт.</p>
+            <a class="btn btn-primary btn-lg px-4" href="{% url 'login' %}">Войти</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
