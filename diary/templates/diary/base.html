@@ -15,20 +15,24 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
+                {% if user.is_authenticated %}
                 <li class="nav-item">
-                    <form method="post" action="#" class="d-inline">
+                    <form method="post" action="{% url 'users:logout' %}" class="d-inline">
                         {% csrf_token %}
                         <button type="submit" class="btn btn-link nav-link text-white">Выйти</button>
                     </form>
                 </li>
+                {% else %}
                 <li class="nav-item">
-                    <a class="nav-link text-white" href="#">Войти</a>
+                    <a class="nav-link text-white" href="{% url 'users:login' %}">Войти</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-white" href="#">Регистрация</a>
+                    <a class="nav-link text-white" href="{% url 'users:register' %}">Регистрация</a>
                 </li>
+                {% endif %}
             </ul>
         </div>
+
     </div>
 </nav>
 
